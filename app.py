@@ -59,22 +59,21 @@ def create_app():
 
     return app
 
+# Create Flask application for Render/Gunicorn
+app = create_app()
+
 if __name__ == '__main__':
     import sys
+
     if hasattr(sys.stdout, 'reconfigure'):
         try:
             sys.stdout.reconfigure(encoding='utf-8')
         except Exception:
             pass
 
-    application = create_app()
     port = int(os.environ.get('PORT', 5050))
-    print("\n" + "="*55)
-    print(">> CampusDash Web Server Started!")
-    print(f">> Local URL: http://127.0.0.1:{port}")
-    print(">> Demo Credentials:")
-    print("   - Admin:   username: admin        | password: admin123")
-    print("   - Faculty: username: FAC01        | password: faculty123")
-    print("   - Student: username: 25221A0501   | password: Aarav Reddy (or student123)")
-    print("="*55 + "\n")
-    application.run(host='127.0.0.1', port=port, debug=False)
+
+    print("CampusDash Web Server Started!")
+    print(f"Local URL: http://127.0.0.1:{port}")
+
+    app.run(host='0.0.0.0', port=port, debug=False)
