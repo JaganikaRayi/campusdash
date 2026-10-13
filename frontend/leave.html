@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Leave Applications – CampusDash</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="dashboard.html">
+        <span class="brand-badge"><i class="fas fa-graduation-cap me-1"></i> CampusDash</span>
+      </a>
+      <div id="nav-user-info"></div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+      <a href="attendance.html" class="nav-item"><i class="fas fa-calendar-check"></i> <span>Attendance</span></a>
+      <a href="fees.html" class="nav-item"><i class="fas fa-receipt"></i> <span>Fees & Receipts</span></a>
+      <a href="timetable.html" class="nav-item"><i class="fas fa-calendar-alt"></i> <span>Timetable</span></a>
+      <a href="results.html" class="nav-item"><i class="fas fa-poll"></i> <span>Exam Results</span></a>
+      <a href="materials.html" class="nav-item"><i class="fas fa-book-open"></i> <span>Study Materials</span></a>
+      <a href="faculty.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> <span>Faculty Directory</span></a>
+      <a href="notifications.html" class="nav-item"><i class="fas fa-bell"></i> <span>Notifications</span></a>
+      <a href="leave.html" class="nav-item active"><i class="fas fa-paper-plane"></i> <span>Leave Requests</span></a>
+      <div class="my-2 border-top border-secondary border-opacity-25"></div>
+      <a href="algorithms.html" class="nav-item" style="color: #38bdf8;"><i class="fas fa-microchip"></i> <span>ADS Visualizer (9)</span></a>
+    </aside>
+
+    <main class="main-content">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+          <h3 class="fw-bold text-white mb-1"><i class="fas fa-paper-plane text-primary me-2"></i> Leave Management System</h3>
+          <p class="text-muted small mb-0">Submit leave requests processed via FIFO and Priority Queue data structures</p>
+        </div>
+        <div>
+          <button class="btn btn-campus btn-sm" data-bs-toggle="modal" data-bs-target="#submitLeaveModal">
+            <i class="fas fa-plus me-1"></i> Apply for Leave
+          </button>
+        </div>
+      </div>
+
+      <!-- Leave Requests Table -->
+      <div class="glass-panel p-4 mb-4">
+        <h5 class="fw-bold text-white mb-3">Submitted Applications</h5>
+        <div class="table-responsive">
+          <table class="table table-campus table-sm">
+            <thead>
+              <tr>
+                <th>Applicant</th>
+                <th>Reason</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Reviewed By</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="leaves-table-body">
+              <tr><td colspan="8" class="text-center py-3 text-muted"><i class="fas fa-spinner fa-spin"></i> Loading leave requests...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Apply Leave Modal -->
+  <div class="modal fade" id="submitLeaveModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content modal-content-campus">
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title text-white"><i class="fas fa-plane-departure text-primary me-2"></i> Apply for Student Leave</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form onsubmit="handleApplyLeave(event)">
+          <div class="modal-body">
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label text-muted small">From Date</label>
+                <input type="date" class="form-control form-control-campus" id="leave-from" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small">To Date</label>
+                <input type="date" class="form-control form-control-campus" id="leave-to" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted small">Reason Category (Priority)</label>
+              <select class="form-select form-control-campus" id="leave-priority">
+                <option value="3">Medical / Health Emergency (Urgent - Priority 3)</option>
+                <option value="2">Academic Conference / Sports Meet (High - Priority 2)</option>
+                <option value="1">Personal / Family Function (Normal - Priority 1)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted small">Reason Details</label>
+              <textarea class="form-control form-control-campus" id="leave-reason" rows="3" placeholder="Explain reason for absence..." required></textarea>
+            </div>
+          </div>
+          <div class="modal-footer border-secondary border-opacity-25">
+            <button type="button" class="btn btn-outline-campus btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success-campus btn-sm"><i class="fas fa-paper-plane me-1"></i> Submit Application</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      Auth.checkAuth(true);
+      await loadLeaves();
+    });
+
+    async function loadLeaves() {
+      const tbody = document.getElementById('leaves-table-body');
+      try {
+        const res = await API.get('/leave');
+        if (!res.success) return;
+
+        const user = Auth.getUser();
+        const canReview = user && (user.role === 'admin' || user.role === 'faculty');
+
+        tbody.innerHTML = res.leaves.map(l => `
+          <tr>
+            <td>
+              <div class="fw-bold text-white small">${l.student_name}</div>
+              <div class="text-muted small">${l.student_reg_no}</div>
+            </td>
+            <td class="text-light small text-truncate" style="max-width: 200px;">${l.reason}</td>
+            <td class="text-white small">${l.from_date}</td>
+            <td class="text-white small">${l.to_date}</td>
+            <td>
+              <span class="badge ${l.priority === 3 ? 'badge-urgent' : (l.priority === 2 ? 'bg-warning text-dark' : 'bg-secondary')}">
+                ${l.priority === 3 ? 'Medical' : (l.priority === 2 ? 'Academic' : 'Personal')}
+              </span>
+            </td>
+            <td>
+              <span class="badge ${l.status === 'Approved' ? 'bg-success' : (l.status === 'Rejected' ? 'bg-danger' : 'bg-warning text-dark')}">
+                ${l.status}
+              </span>
+            </td>
+            <td class="text-muted small">${l.reviewed_by || 'Pending Review'}</td>
+            <td>
+              ${canReview && l.status === 'Pending' ? `
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-success py-0" onclick="reviewLeave(${l.id}, 'Approved')"><i class="fas fa-check"></i></button>
+                  <button class="btn btn-outline-danger py-0" onclick="reviewLeave(${l.id}, 'Rejected')"><i class="fas fa-times"></i></button>
+                </div>
+              ` : `<span class="text-muted small">—</span>`}
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function handleApplyLeave(e) {
+      e.preventDefault();
+      const user = Auth.getUser();
+      const from = document.getElementById('leave-from').value;
+      const to = document.getElementById('leave-to').value;
+      const prio = document.getElementById('leave-priority').value;
+      const reason = document.getElementById('leave-reason').value;
+
+      try {
+        const res = await API.post('/leave', {
+          student_reg_no: user ? user.reg_no : '25221A0501',
+          student_name: user ? user.name : 'Student',
+          from_date: from,
+          to_date: to,
+          priority: parseInt(prio),
+          reason: reason
+        });
+
+        if (res.success) {
+          showToast(res.message, 'success');
+          const modalEl = document.getElementById('submitLeaveModal');
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) modal.hide();
+          loadLeaves();
+        }
+      } catch (e) {}
+    }
+
+    async function reviewLeave(leaveId, status) {
+      const user = Auth.getUser();
+      try {
+        const res = await API.put(`/leave/${leaveId}`, {
+          status: status,
+          reviewed_by: user ? user.name : 'Admin'
+        });
+        if (res.success) {
+          showToast(res.message, 'success');
+          loadLeaves();
+        }
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>

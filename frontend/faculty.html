@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Directory & Academic Cabins – CampusDash</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="dashboard.html">
+        <span class="brand-badge"><i class="fas fa-graduation-cap me-1"></i> CampusDash</span>
+      </a>
+      <div id="nav-user-info"></div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+      <a href="attendance.html" class="nav-item"><i class="fas fa-calendar-check"></i> <span>Attendance</span></a>
+      <a href="fees.html" class="nav-item"><i class="fas fa-receipt"></i> <span>Fees & Receipts</span></a>
+      <a href="timetable.html" class="nav-item"><i class="fas fa-calendar-alt"></i> <span>Timetable</span></a>
+      <a href="results.html" class="nav-item"><i class="fas fa-poll"></i> <span>Exam Results</span></a>
+      <a href="materials.html" class="nav-item"><i class="fas fa-book-open"></i> <span>Study Materials</span></a>
+      <a href="faculty.html" class="nav-item active"><i class="fas fa-chalkboard-teacher"></i> <span>Faculty Directory</span></a>
+      <a href="notifications.html" class="nav-item"><i class="fas fa-bell"></i> <span>Notifications</span></a>
+      <a href="leave.html" class="nav-item"><i class="fas fa-paper-plane"></i> <span>Leave Requests</span></a>
+      <div class="my-2 border-top border-secondary border-opacity-25"></div>
+      <a href="algorithms.html" class="nav-item" style="color: #38bdf8;"><i class="fas fa-microchip"></i> <span>ADS Visualizer (9)</span></a>
+    </aside>
+
+    <main class="main-content">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+          <h3 class="fw-bold text-white mb-1"><i class="fas fa-chalkboard-teacher text-success me-2"></i> Faculty Directory</h3>
+          <p class="text-muted small mb-0">Contact details, assigned courses, and campus cabin locations</p>
+        </div>
+      </div>
+
+      <div class="row g-4" id="faculty-grid">
+        <div class="col-12 text-center py-4 text-muted"><i class="fas fa-spinner fa-spin"></i> Loading faculty directory...</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      Auth.checkAuth(true);
+      const container = document.getElementById('faculty-grid');
+      try {
+        const res = await API.get('/faculty');
+        if (!res.success) return;
+
+        container.innerHTML = res.faculty.map(f => `
+          <div class="col-md-6 col-lg-6">
+            <div class="glass-panel p-4 h-100">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center" style="width: 56px; height: 56px; font-size: 1.4rem; font-weight: 700;">
+                  ${f.name.charAt(f.name.indexOf('.') > -1 ? f.name.indexOf('.') + 2 : 0)}
+                </div>
+                <div>
+                  <h5 class="fw-bold text-white mb-0">${f.name}</h5>
+                  <span class="badge bg-secondary me-2">${f.department}</span>
+                  <span class="badge bg-dark border border-secondary text-info">${f.faculty_id}</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded mb-3" style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color);">
+                <div class="small mb-1"><span class="text-muted">Courses Taught:</span> <strong class="text-white">${f.subjects}</strong></div>
+                <div class="small"><span class="text-muted">Office Cabin:</span> <strong class="text-warning">${f.cabin}</strong></div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center small text-muted">
+                <span><i class="far fa-envelope text-primary me-1"></i> ${f.email}</span>
+                <span><i class="fas fa-phone-alt text-success me-1"></i> ${f.phone}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  </script>
+</body>
+</html>

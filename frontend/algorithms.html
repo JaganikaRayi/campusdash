@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADS Demonstration Suite & Live Benchmarks – CampusDash</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="dashboard.html">
+        <span class="brand-badge"><i class="fas fa-graduation-cap me-1"></i> CampusDash</span>
+      </a>
+      <div id="nav-user-info"></div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+      <a href="attendance.html" class="nav-item"><i class="fas fa-calendar-check"></i> <span>Attendance</span></a>
+      <a href="fees.html" class="nav-item"><i class="fas fa-receipt"></i> <span>Fees & Receipts</span></a>
+      <a href="timetable.html" class="nav-item"><i class="fas fa-calendar-alt"></i> <span>Timetable</span></a>
+      <a href="results.html" class="nav-item"><i class="fas fa-poll"></i> <span>Exam Results</span></a>
+      <a href="materials.html" class="nav-item"><i class="fas fa-book-open"></i> <span>Study Materials</span></a>
+      <a href="faculty.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> <span>Faculty Directory</span></a>
+      <a href="notifications.html" class="nav-item"><i class="fas fa-bell"></i> <span>Notifications</span></a>
+      <a href="leave.html" class="nav-item"><i class="fas fa-paper-plane"></i> <span>Leave Requests</span></a>
+      <div class="my-2 border-top border-secondary border-opacity-25"></div>
+      <a href="algorithms.html" class="nav-item active" style="background: var(--accent-gradient); color: #fff;">
+        <i class="fas fa-microchip"></i> <span>ADS Visualizer (9)</span>
+      </a>
+    </aside>
+
+    <main class="main-content">
+      <!-- Title Header -->
+      <div class="mb-4">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill border border-info border-opacity-50 mb-2" style="background: rgba(6, 182, 212, 0.1);">
+          <span class="badge bg-info text-dark">Python 3 Backend Algorithms</span>
+          <span class="text-white small fw-semibold">Interactive Live Execution & Complexity Benchmarks</span>
+        </div>
+        <h2 class="fw-bold text-white mb-1">Advanced Data Structures & Algorithms (ADS) Suite</h2>
+        <p class="text-muted small mb-0">Every algorithm below is an active Python function executing on real database records in real-time.</p>
+      </div>
+
+      <!-- Algorithm Tabs Navigation -->
+      <ul class="nav nav-pills mb-4 gap-2 border-bottom border-secondary border-opacity-25 pb-3" id="algoTabs" role="tablist">
+        <li class="nav-item">
+          <button class="nav-link active btn-sm" id="tab-search-btn" data-bs-toggle="pill" data-bs-target="#pane-search">
+            <i class="fas fa-search me-1"></i> 1 & 2. Hash & Binary Search
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn-sm" id="tab-sort-btn" data-bs-toggle="pill" data-bs-target="#pane-sort" onclick="runMergeSortBenchmark('attendance_pct', true)">
+            <i class="fas fa-sort-amount-down me-1"></i> 6. Merge Sort O(n log n)
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn-sm" id="tab-graph-btn" data-bs-toggle="pill" data-bs-target="#pane-graph" onclick="runGraphAlgorithm('dijkstra')">
+            <i class="fas fa-project-diagram me-1"></i> 3. Graphs (BFS & Dijkstra)
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn-sm" id="tab-tt-btn" data-bs-toggle="pill" data-bs-target="#pane-tt" onclick="compareTimetableAlgorithms()">
+            <i class="fas fa-calendar-alt me-1"></i> 4 & 5. Greedy vs Backtracking
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn-sm" id="tab-queue-btn" data-bs-toggle="pill" data-bs-target="#pane-queue" onclick="runQueueComparison()">
+            <i class="fas fa-layer-group me-1"></i> 7 & 8. FIFO vs Priority Queue
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn-sm" id="tab-dp-btn" data-bs-toggle="pill" data-bs-target="#pane-dp" onclick="runKnapsackPlanner()">
+            <i class="fas fa-brain me-1"></i> 9. Dynamic Programming
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab Content Panels -->
+      <div class="tab-content" id="algoTabContent">
+
+        <!-- ==========================================
+             PANE 1: SEARCHING (Hash Table vs Binary Search vs Linear Search)
+             ========================================== -->
+        <div class="tab-pane fade show active" id="pane-search">
+          <div class="glass-panel p-4 mb-4">
+            <h5 class="fw-bold text-white mb-1"><i class="fas fa-search text-primary me-2"></i> Student Search Comparison: Hash Table vs Binary vs Linear</h5>
+            <p class="text-muted small mb-3">Compare operation step counts, lookup speeds, and theoretical asymptotic complexities on live student records.</p>
+
+            <!-- Search Input Box -->
+            <div class="row g-2 align-items-center mb-4">
+              <div class="col-md-5">
+                <div class="input-group">
+                  <span class="input-group-text bg-dark border-secondary text-muted"><i class="fas fa-id-card"></i></span>
+                  <input type="text" class="form-control form-control-campus" id="search-reg-input" value="25221A0515" placeholder="Enter Registration No (e.g. 25221A0520)">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <button class="btn btn-campus w-100" onclick="runSearchBenchmark()">
+                  <i class="fas fa-play me-1"></i> Run Benchmark
+                </button>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex gap-1">
+                  <button class="btn btn-outline-campus btn-sm" onclick="runSearchBenchmark('25221A0501')">25221A0501 (First)</button>
+                  <button class="btn btn-outline-campus btn-sm" onclick="runSearchBenchmark('25221A0530')">25221A0530 (Mid)</button>
+                  <button class="btn btn-outline-campus btn-sm" onclick="runSearchBenchmark('25221A05F4')">25221A05F4 (Hex)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Benchmark Results -->
+            <div id="search-benchmark-results"></div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANE 2: SORTING (Merge Sort)
+             ========================================== -->
+        <div class="tab-pane fade" id="pane-sort">
+          <div class="glass-panel p-4 mb-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+              <div>
+                <h5 class="fw-bold text-white mb-1"><i class="fas fa-sort-amount-down text-info me-2"></i> Algorithm 6: Divide-and-Conquer Merge Sort</h5>
+                <p class="text-muted small mb-0">Guaranteed O(n log n) time across best, average, and worst cases with stable ordering.</p>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-campus btn-sm" onclick="runMergeSortBenchmark('attendance_pct', true)">
+                  <i class="fas fa-percent me-1"></i> Sort by Attendance (High to Low)
+                </button>
+                <button class="btn btn-outline-campus btn-sm" onclick="runMergeSortBenchmark('reg_no', false)">
+                  <i class="fas fa-id-badge me-1"></i> Sort by Reg Number (Ascending)
+                </button>
+              </div>
+            </div>
+
+            <div id="sort-benchmark-results"></div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANE 3: GRAPH ALGORITHMS (BFS & Dijkstra)
+             ========================================== -->
+        <div class="tab-pane fade" id="pane-graph">
+          <div class="glass-panel p-4 mb-4">
+            <h5 class="fw-bold text-white mb-1"><i class="fas fa-project-diagram text-success me-2"></i> Algorithm 3: Campus Navigation Graph (BFS & Dijkstra)</h5>
+            <p class="text-muted small mb-3">Calculates shortest walking path routes and breadth-first building discovery trees.</p>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-4">
+                <label class="form-label text-muted small">Starting Campus Location</label>
+                <select class="form-select form-control-campus" id="graph-start-node">
+                  <option value="MAIN_GATE" selected>Main Entrance Gate</option>
+                  <option value="ADMIN_BLOCK">Administrative Block</option>
+                  <option value="CSE_DEPT">CSE Department & Labs</option>
+                  <option value="LIBRARY">Central Digital Library</option>
+                  <option value="AUDITORIUM">Kalam Auditorium</option>
+                  <option value="CAFETERIA">Campus Green Cafeteria</option>
+                  <option value="SPORTS_COMPLEX">Sports Complex & Gym</option>
+                  <option value="HOSTEL_A">Boys Hostel Block A</option>
+                  <option value="HOSTEL_B">Girls Hostel Block B</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label text-muted small">Destination Location</label>
+                <select class="form-select form-control-campus" id="graph-target-node">
+                  <option value="CSE_DEPT" selected>CSE Department & Labs</option>
+                  <option value="MAIN_GATE">Main Entrance Gate</option>
+                  <option value="ADMIN_BLOCK">Administrative Block</option>
+                  <option value="LIBRARY">Central Digital Library</option>
+                  <option value="AUDITORIUM">Kalam Auditorium</option>
+                  <option value="CAFETERIA">Campus Green Cafeteria</option>
+                  <option value="SPORTS_COMPLEX">Sports Complex & Gym</option>
+                  <option value="HOSTEL_A">Boys Hostel Block A</option>
+                  <option value="HOSTEL_B">Girls Hostel Block B</option>
+                </select>
+              </div>
+              <div class="col-md-4 d-flex align-items-end gap-2">
+                <button class="btn btn-campus flex-fill" onclick="runGraphAlgorithm('dijkstra')">
+                  <i class="fas fa-route me-1"></i> Dijkstra Shortest Path
+                </button>
+                <button class="btn btn-outline-campus" onclick="runGraphAlgorithm('bfs')">
+                  <i class="fas fa-sitemap me-1"></i> BFS Layers
+                </button>
+              </div>
+            </div>
+
+            <div id="graph-results-box"></div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANE 4: TIMETABLE (Greedy vs Backtracking)
+             ========================================== -->
+        <div class="tab-pane fade" id="pane-tt">
+          <div class="glass-panel p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h5 class="fw-bold text-white mb-1"><i class="fas fa-calendar-alt text-warning me-2"></i> Algorithms 4 & 5: Greedy vs Backtracking Timetable Scheduling</h5>
+                <p class="text-muted small mb-0">Demonstrating why Greedy scheduling generates clashes under tight room/faculty limits, whereas Backtracking backtracks to produce an 100% clash-free schedule.</p>
+              </div>
+              <button class="btn btn-campus btn-sm" onclick="compareTimetableAlgorithms()">
+                <i class="fas fa-sync-alt me-1"></i> Re-Run Comparison
+              </button>
+            </div>
+
+            <div id="timetable-compare-results"></div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANE 5: QUEUES (FIFO vs Priority Queue)
+             ========================================== -->
+        <div class="tab-pane fade" id="pane-queue">
+          <div class="glass-panel p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h5 class="fw-bold text-white mb-1"><i class="fas fa-layer-group text-primary me-2"></i> Algorithms 7 & 8: FIFO Queue vs Priority Queue (Binary Heap)</h5>
+                <p class="text-muted small mb-0">FIFO processes leave requests in arrival order; Priority Queue extracts medical and urgent emergency leaves first using binary max-heap.</p>
+              </div>
+              <button class="btn btn-campus btn-sm" onclick="runQueueComparison()">
+                <i class="fas fa-sync-alt me-1"></i> Re-Evaluate Queue Order
+              </button>
+            </div>
+
+            <div id="queue-compare-results"></div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANE 6: DYNAMIC PROGRAMMING (Knapsack Study Planner)
+             ========================================== -->
+        <div class="tab-pane fade" id="pane-dp">
+          <div class="glass-panel p-4 mb-4">
+            <h5 class="fw-bold text-white mb-1"><i class="fas fa-brain text-success me-2"></i> Algorithm 9: Dynamic Programming (0/1 Knapsack Study Planner)</h5>
+            <p class="text-muted small mb-3">Given limited study hours (W) before exams, find the optimal subset of syllabus topics that maximizes total exam weight score.</p>
+
+            <div class="row g-3 align-items-center mb-4">
+              <div class="col-md-6">
+                <label class="form-label text-muted small fw-bold">Available Study Hours: <span class="text-info fw-bold" id="knapsack-hours-val">8 Hours</span></label>
+                <input type="range" class="form-range" id="knapsack-hours-input" min="3" max="14" step="1" value="8" oninput="document.getElementById('knapsack-hours-val').innerText = this.value + ' Hours'; runKnapsackPlanner();">
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex gap-2">
+                  <button class="btn btn-outline-campus btn-sm" onclick="document.getElementById('knapsack-hours-input').value = 5; document.getElementById('knapsack-hours-val').innerText = '5 Hours'; runKnapsackPlanner();">5 Hours</button>
+                  <button class="btn btn-outline-campus btn-sm" onclick="document.getElementById('knapsack-hours-input').value = 8; document.getElementById('knapsack-hours-val').innerText = '8 Hours'; runKnapsackPlanner();">8 Hours</button>
+                  <button class="btn btn-outline-campus btn-sm" onclick="document.getElementById('knapsack-hours-input').value = 12; document.getElementById('knapsack-hours-val').innerText = '12 Hours'; runKnapsackPlanner();">12 Hours</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="knapsack-results-box"></div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/algorithms.js"></script>
+</body>
+</html>

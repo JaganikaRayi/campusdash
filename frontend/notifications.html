@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Announcements & Alerts – CampusDash</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="dashboard.html">
+        <span class="brand-badge"><i class="fas fa-graduation-cap me-1"></i> CampusDash</span>
+      </a>
+      <div id="nav-user-info"></div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+      <a href="attendance.html" class="nav-item"><i class="fas fa-calendar-check"></i> <span>Attendance</span></a>
+      <a href="fees.html" class="nav-item"><i class="fas fa-receipt"></i> <span>Fees & Receipts</span></a>
+      <a href="timetable.html" class="nav-item"><i class="fas fa-calendar-alt"></i> <span>Timetable</span></a>
+      <a href="results.html" class="nav-item"><i class="fas fa-poll"></i> <span>Exam Results</span></a>
+      <a href="materials.html" class="nav-item"><i class="fas fa-book-open"></i> <span>Study Materials</span></a>
+      <a href="faculty.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> <span>Faculty Directory</span></a>
+      <a href="notifications.html" class="nav-item active"><i class="fas fa-bell"></i> <span>Notifications</span></a>
+      <a href="leave.html" class="nav-item"><i class="fas fa-paper-plane"></i> <span>Leave Requests</span></a>
+      <div class="my-2 border-top border-secondary border-opacity-25"></div>
+      <a href="algorithms.html" class="nav-item" style="color: #38bdf8;"><i class="fas fa-microchip"></i> <span>ADS Visualizer (9)</span></a>
+    </aside>
+
+    <main class="main-content">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+          <h3 class="fw-bold text-white mb-1"><i class="fas fa-bell text-warning me-2"></i> Campus Broadcasts & Alerts</h3>
+          <p class="text-muted small mb-0">Prioritized campus notices sorted by binary heap urgency</p>
+        </div>
+        <div>
+          <button class="btn btn-campus btn-sm" data-bs-toggle="modal" data-bs-target="#composeNoticeModal">
+            <i class="fas fa-paper-plane me-1"></i> Post Announcement
+          </button>
+        </div>
+      </div>
+
+      <div class="row g-3" id="notifications-feed">
+        <div class="col-12 text-center py-4 text-muted"><i class="fas fa-spinner fa-spin"></i> Loading notices...</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Compose Modal -->
+  <div class="modal fade" id="composeNoticeModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content modal-content-campus">
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title text-white"><i class="fas fa-bullhorn text-warning me-2"></i> Broadcast Announcement</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form onsubmit="handlePostNotice(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label text-muted small">Notice Title</label>
+              <input type="text" class="form-control form-control-campus" id="notif-title" placeholder="e.g. Mid-Term Examination Dates" required>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label text-muted small">Category</label>
+                <select class="form-select form-control-campus" id="notif-category">
+                  <option value="Academic">Academic</option>
+                  <option value="Examination">Examination</option>
+                  <option value="Fee Due">Fee Due</option>
+                  <option value="Placement">Placement & Training</option>
+                  <option value="Event">Campus Event</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted small">Priority (Heap Weight)</label>
+                <select class="form-select form-control-campus" id="notif-priority">
+                  <option value="3">Urgent (Priority 3)</option>
+                  <option value="2" selected>High (Priority 2)</option>
+                  <option value="1">Normal (Priority 1)</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted small">Target Role</label>
+              <select class="form-select form-control-campus" id="notif-role">
+                <option value="ALL">Everyone (Campus-wide)</option>
+                <option value="student">Students Only</option>
+                <option value="faculty">Faculty Only</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted small">Notice Content</label>
+              <textarea class="form-control form-control-campus" id="notif-msg" rows="3" required placeholder="Write details here..."></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-muted small">Deadline / Date (Optional)</label>
+              <input type="date" class="form-control form-control-campus" id="notif-deadline">
+            </div>
+          </div>
+          <div class="modal-footer border-secondary border-opacity-25">
+            <button type="button" class="btn btn-outline-campus btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success-campus btn-sm"><i class="fas fa-check me-1"></i> Publish Notice</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      Auth.checkAuth(true);
+      await loadNotifications();
+    });
+
+    async function loadNotifications() {
+      const container = document.getElementById('notifications-feed');
+      try {
+        const res = await API.get('/notifications');
+        if (!res.success) return;
+
+        container.innerHTML = res.notifications.map(n => `
+          <div class="col-md-12">
+            <div class="glass-panel p-4 ${n.priority === 3 ? 'border-danger' : ''}">
+              <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge ${n.priority === 3 ? 'badge-urgent' : 'badge-student'}">
+                    ${n.priority === 3 ? '<i class="fas fa-exclamation-triangle me-1"></i> URGENT' : n.category}
+                  </span>
+                  <h5 class="fw-bold text-white mb-0">${n.title}</h5>
+                </div>
+                <div class="text-muted small">
+                  <i class="far fa-calendar-alt text-primary me-1"></i> Posted: ${n.posted_date}
+                  ${n.deadline ? ` • <span class="text-warning"><i class="far fa-clock me-1"></i> Deadline: ${n.deadline}</span>` : ''}
+                </div>
+              </div>
+              <p class="text-light mb-2">${n.message}</p>
+              <div class="d-flex justify-content-between align-items-center text-dim small">
+                <span>Audience: <strong class="text-info">${n.target_role.toUpperCase()}</strong></span>
+                <span class="badge bg-secondary bg-opacity-25 text-muted">Priority Weight: ${n.priority}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function handlePostNotice(e) {
+      e.preventDefault();
+      const title = document.getElementById('notif-title').value;
+      const cat = document.getElementById('notif-category').value;
+      const prio = document.getElementById('notif-priority').value;
+      const role = document.getElementById('notif-role').value;
+      const msg = document.getElementById('notif-msg').value;
+      const deadline = document.getElementById('notif-deadline').value;
+
+      try {
+        const res = await API.post('/notifications', {
+          title: title,
+          category: cat,
+          priority: parseInt(prio),
+          target_role: role,
+          message: msg,
+          posted_date: new Date().toISOString().split('T')[0],
+          deadline: deadline || null
+        });
+
+        if (res.success) {
+          showToast(res.message, 'success');
+          const modalEl = document.getElementById('composeNoticeModal');
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) modal.hide();
+          loadNotifications();
+        }
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>

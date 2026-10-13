@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – CampusDash Smart Campus</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="dashboard.html">
+        <span class="brand-badge"><i class="fas fa-graduation-cap me-1"></i> CampusDash</span>
+      </a>
+      <div id="nav-user-info"></div>
+    </div>
+  </nav>
+
+  <!-- Main Layout -->
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a href="dashboard.html" class="nav-item active">
+        <i class="fas fa-home"></i> <span>Dashboard</span>
+      </a>
+      <a href="attendance.html" class="nav-item">
+        <i class="fas fa-calendar-check"></i> <span>Attendance</span>
+      </a>
+      <a href="fees.html" class="nav-item">
+        <i class="fas fa-receipt"></i> <span>Fees & Receipts</span>
+      </a>
+      <a href="timetable.html" class="nav-item">
+        <i class="fas fa-calendar-alt"></i> <span>Timetable</span>
+      </a>
+      <a href="results.html" class="nav-item">
+        <i class="fas fa-poll"></i> <span>Exam Results</span>
+      </a>
+      <a href="materials.html" class="nav-item">
+        <i class="fas fa-book-open"></i> <span>Study Materials</span>
+      </a>
+      <a href="faculty.html" class="nav-item">
+        <i class="fas fa-chalkboard-teacher"></i> <span>Faculty Directory</span>
+      </a>
+      <a href="notifications.html" class="nav-item">
+        <i class="fas fa-bell"></i> <span>Notifications</span>
+      </a>
+      <a href="leave.html" class="nav-item">
+        <i class="fas fa-paper-plane"></i> <span>Leave Requests</span>
+      </a>
+      <div class="my-2 border-top border-secondary border-opacity-25"></div>
+      <a href="algorithms.html" class="nav-item" style="color: #38bdf8;">
+        <i class="fas fa-microchip"></i> <span>ADS Visualizer (9)</span>
+      </a>
+    </aside>
+
+    <!-- Main Content Body -->
+    <main class="main-content">
+      <!-- Greeting Banner -->
+      <div id="dashboard-greeting" class="mb-4"></div>
+
+      <!-- Student Stat Cards Grid -->
+      <div class="row g-3 mb-4" id="student-stat-grid">
+        <!-- Attendance Card -->
+        <div class="col-md-4 col-sm-6">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-success bg-opacity-25 text-success">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-label">Attendance Percentage</div>
+            <div class="stat-val text-success" id="stat-attendance">88.5%</div>
+            <div class="progress my-2" style="height: 6px;">
+              <div class="progress-bar bg-success" id="stat-att-progress" style="width: 88.5%;"></div>
+            </div>
+            <div class="text-muted small" id="att-subtext">38 of 42 periods attended</div>
+          </div>
+        </div>
+
+        <!-- Fee Balance Card -->
+        <div class="col-md-4 col-sm-6">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-primary bg-opacity-25 text-primary">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="stat-label">Tuition Fee Due</div>
+              <span class="badge bg-warning text-dark" id="fee-bal-badge">Due</span>
+            </div>
+            <div class="stat-val text-white" id="stat-fee-bal">₹25,000</div>
+            <div class="d-flex justify-content-between text-muted small mt-2">
+              <span>Paid: <strong class="text-info" id="stat-fee-paid">₹50,000</strong></span>
+              <span>Total: <strong class="text-white" id="stat-fee-total">₹75,000</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SGPA Card -->
+        <div class="col-md-4 col-sm-12">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-info bg-opacity-25 text-info">
+              <i class="fas fa-award"></i>
+            </div>
+            <div class="stat-label">Current SGPA</div>
+            <div class="stat-val text-info" id="stat-sgpa">9.20</div>
+            <div class="text-muted small mt-2" id="sgpa-subtext">20 Academic credits earned</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Faculty Stats (hidden by default) -->
+      <div class="row g-3 mb-4 d-none" id="faculty-stat-grid">
+        <div class="col-md-4">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-primary bg-opacity-25 text-primary"><i class="fas fa-book"></i></div>
+            <div class="stat-label">Assigned Subjects</div>
+            <div class="stat-val">2 Courses</div>
+            <small class="text-muted">CS301-ADS & CS302-Python</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-success bg-opacity-25 text-success"><i class="fas fa-users"></i></div>
+            <div class="stat-label">Total Students</div>
+            <div class="stat-val">120 Students</div>
+            <small class="text-muted">Sections A & B</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-info bg-opacity-25 text-info"><i class="fas fa-clock"></i></div>
+            <div class="stat-label">Weekly Lectures</div>
+            <div class="stat-val">12 Periods</div>
+            <small class="text-muted">Across 6 weekdays</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Stats (hidden by default) -->
+      <div class="row g-3 mb-4 d-none" id="admin-stat-grid">
+        <div class="col-md-4">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-primary bg-opacity-25 text-primary"><i class="fas fa-users"></i></div>
+            <div class="stat-label">Total Enrolled Students</div>
+            <div class="stat-val" id="admin-total-students">120</div>
+            <small class="text-muted">CSE Department</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-success bg-opacity-25 text-success"><i class="fas fa-coins"></i></div>
+            <div class="stat-label">Total Fees Collected</div>
+            <div class="stat-val text-success" id="admin-fee-collected">₹64,50,000</div>
+            <small class="text-muted">Academic Year 2026</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-panel stat-card">
+            <div class="stat-icon bg-warning bg-opacity-25 text-warning"><i class="fas fa-hourglass-half"></i></div>
+            <div class="stat-label">Pending Dues</div>
+            <div class="stat-val text-warning" id="admin-fee-pending">₹25,50,000</div>
+            <small class="text-muted">Across active semesters</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row: Timetable & Announcements -->
+      <div class="row g-4 mb-4">
+        <!-- Today's Timetable -->
+        <div class="col-lg-7">
+          <div class="glass-panel p-4 h-100" id="today-timetable-container">
+            <div class="text-center py-4 text-muted"><i class="fas fa-spinner fa-spin"></i> Loading schedule...</div>
+          </div>
+        </div>
+
+        <!-- Latest Notifications -->
+        <div class="col-lg-5">
+          <div class="glass-panel p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold text-white mb-0"><i class="fas fa-bullhorn text-warning me-2"></i> Latest Announcements</h6>
+              <a href="notifications.html" class="small text-decoration-none text-primary">View All <i class="fas fa-chevron-right ms-1"></i></a>
+            </div>
+            <div id="recent-notifications-list">
+              <div class="text-center py-4 text-muted"><i class="fas fa-spinner fa-spin"></i> Loading notices...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Shortcuts -->
+      <div class="mb-4">
+        <h6 class="text-muted text-uppercase fw-bold small mb-3">Quick Navigation Shortcuts</h6>
+        <div class="row g-3">
+          <div class="col-6 col-md-3">
+            <a href="attendance.html" class="glass-panel p-3 d-block text-decoration-none text-white text-center">
+              <i class="fas fa-calendar-check fs-3 text-success mb-2"></i>
+              <div class="fw-bold small">Attendance Tracker</div>
+            </a>
+          </div>
+          <div class="col-6 col-md-3">
+            <a href="fees.html" class="glass-panel p-3 d-block text-decoration-none text-white text-center">
+              <i class="fas fa-credit-card fs-3 text-primary mb-2"></i>
+              <div class="fw-bold small">Pay Tuition Fee</div>
+            </a>
+          </div>
+          <div class="col-6 col-md-3">
+            <a href="materials.html" class="glass-panel p-3 d-block text-decoration-none text-white text-center">
+              <i class="fas fa-file-download fs-3 text-info mb-2"></i>
+              <div class="fw-bold small">Study Notes & PDFs</div>
+            </a>
+          </div>
+          <div class="col-6 col-md-3">
+            <a href="algorithms.html" class="glass-panel p-3 d-block text-decoration-none text-white text-center">
+              <i class="fas fa-laptop-code fs-3 text-warning mb-2"></i>
+              <div class="fw-bold small">ADS Algorithm Suite</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

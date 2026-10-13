@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Timetable – CampusDash</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-custom">
+    <div class="container-fluid px-3">
+      <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="dashboard.html">
+        <span class="brand-badge"><i class="fas fa-graduation-cap me-1"></i> CampusDash</span>
+      </a>
+      <div id="nav-user-info"></div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+      <a href="attendance.html" class="nav-item"><i class="fas fa-calendar-check"></i> <span>Attendance</span></a>
+      <a href="fees.html" class="nav-item"><i class="fas fa-receipt"></i> <span>Fees & Receipts</span></a>
+      <a href="timetable.html" class="nav-item active"><i class="fas fa-calendar-alt"></i> <span>Timetable</span></a>
+      <a href="results.html" class="nav-item"><i class="fas fa-poll"></i> <span>Exam Results</span></a>
+      <a href="materials.html" class="nav-item"><i class="fas fa-book-open"></i> <span>Study Materials</span></a>
+      <a href="faculty.html" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> <span>Faculty Directory</span></a>
+      <a href="notifications.html" class="nav-item"><i class="fas fa-bell"></i> <span>Notifications</span></a>
+      <a href="leave.html" class="nav-item"><i class="fas fa-paper-plane"></i> <span>Leave Requests</span></a>
+      <div class="my-2 border-top border-secondary border-opacity-25"></div>
+      <a href="algorithms.html" class="nav-item" style="color: #38bdf8;"><i class="fas fa-microchip"></i> <span>ADS Visualizer (9)</span></a>
+    </aside>
+
+    <main class="main-content">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+          <h3 class="fw-bold text-white mb-1"><i class="fas fa-calendar-alt text-info me-2"></i> Weekly Academic Schedule</h3>
+          <p class="text-muted small mb-0">Period-wise timetable with classroom allocations and faculty mappings</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-campus btn-sm" onclick="runTimetableADSGenerator('greedy')">
+            <i class="fas fa-bolt text-warning me-1"></i> Run Greedy Scheduler
+          </button>
+          <button class="btn btn-campus btn-sm" onclick="runTimetableADSGenerator('backtracking')">
+            <i class="fas fa-check-double text-success me-1"></i> Run Backtracking (Clash-Free)
+          </button>
+        </div>
+      </div>
+
+      <!-- ADS Result Banner (shown when triggered) -->
+      <div id="generator-result-box" class="glass-panel p-3 mb-4 d-none"></div>
+
+      <!-- Timetable Grid -->
+      <div class="glass-panel p-4 mb-4">
+        <div class="table-responsive">
+          <table class="table table-bordered border-secondary border-opacity-25 align-middle mb-0">
+            <thead class="text-center bg-dark bg-opacity-75 text-muted small">
+              <tr>
+                <th style="width: 110px;">Day</th>
+                <th>Period 1<br><span style="font-size:0.75rem; font-weight:normal;">09:00 - 09:50</span></th>
+                <th>Period 2<br><span style="font-size:0.75rem; font-weight:normal;">09:50 - 10:40</span></th>
+                <th>Period 3<br><span style="font-size:0.75rem; font-weight:normal;">10:50 - 11:40</span></th>
+                <th>Period 4<br><span style="font-size:0.75rem; font-weight:normal;">11:40 - 12:30</span></th>
+                <th>Period 5<br><span style="font-size:0.75rem; font-weight:normal;">01:30 - 02:20</span></th>
+                <th>Period 6<br><span style="font-size:0.75rem; font-weight:normal;">02:20 - 03:10</span></th>
+              </tr>
+            </thead>
+            <tbody id="timetable-grid-body">
+              <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fas fa-spinner fa-spin"></i> Loading academic schedule...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Timetable Legend & ADS Note -->
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="glass-panel p-3">
+            <h6 class="fw-bold text-white small mb-2"><i class="fas fa-info-circle text-primary me-2"></i> Class Locations</h6>
+            <div class="d-flex flex-wrap gap-2 small">
+              <span class="badge bg-dark border text-info">LH-301: Main Lecture Hall</span>
+              <span class="badge bg-dark border text-info">LH-302: Seminar Hall</span>
+              <span class="badge bg-dark border text-warning">Lab-01: Python Systems Lab</span>
+              <span class="badge bg-dark border text-warning">Lab-02: ADS Research Lab</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="glass-panel p-3">
+            <h6 class="fw-bold text-white small mb-2"><i class="fas fa-brain text-success me-2"></i> ADS Timetable Generator Info</h6>
+            <p class="small text-muted mb-0">
+              The Backtracking Algorithm resolves resource clashes (preventing double booking of Dr. Srinivas Rao or LH-301 in the same period) using depth-first constraint pruning.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/timetable.js"></script>
+</body>
+</html>
